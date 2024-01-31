@@ -1,6 +1,7 @@
 import {
   unstable_createGetCssVar as systemCreateGetCssVar,
   unstable_prepareCssVars as prepareCssVars,
+  createTheme
 } from '@mui/system';
 
 declare module '@mui/system' {
@@ -40,18 +41,17 @@ const darkColorScheme = {
   },
 };
 
+// Don't know what the use of this is yet
 const createGetCssVar = (cssVarPrefix = 'my-app') =>
   systemCreateGetCssVar(cssVarPrefix);
 
-function extendTheme({ cssVarPrefix = 'my-app' } = {}) {
-  const getCssVar = createGetCssVar(cssVarPrefix); // ??
+function extendTheme({ cssVarPrefix = 'my-app', baseTheme = {} } = {}) {
   const theme: any = {
+    ...baseTheme,
     colorSchemes: {
       light: lightColorScheme,
       dark: darkColorScheme,
     },
-    // ... any other objects independent of color-scheme,
-    // like fontSizes, spacing tokens, etc
   };
 
   const { vars: themeVars, generateCssVars } = prepareCssVars(
@@ -70,6 +70,11 @@ function extendTheme({ cssVarPrefix = 'my-app' } = {}) {
   return theme;
 }
 
-const myCustomDefaultTheme = extendTheme();
+const baseTheme = createTheme({
+  // any stuff apart from colors,
+  spacing: [0, 2, 5, 10, 20]
+});
+
+const myCustomDefaultTheme = extendTheme({ baseTheme });
 
 export default myCustomDefaultTheme;

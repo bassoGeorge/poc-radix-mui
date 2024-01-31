@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 import Button from "../stuff/Button";
+import { MyCheckbox } from "../stuff/Checkbox";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,6 +18,10 @@ export default function Home() {
       </Head>
       <main className={`${styles.main} ${inter.className}`}>
         <Button>Hey there</Button>
+
+        <form>
+          <MyCheckbox>Check me out</MyCheckbox>
+        </form>
       </main>
     </>
   );
