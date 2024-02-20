@@ -109,7 +109,7 @@ function extendTheme({ cssVarPrefix = "my-app", baseTheme = {} } = {}) {
 
 const baseTheme = createTheme({
   // any stuff apart from colors,
-  spacing: [0, 2, 5, 10, 20],
+  spacing: [0, 2, 5, 10, 20, 30, 40],
 });
 
 const myCustomDefaultTheme = extendTheme({ baseTheme });

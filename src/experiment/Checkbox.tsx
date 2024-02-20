@@ -8,22 +8,25 @@ export function MyCheckbox({ children }: React.PropsWithChildren) {
   const id = useId();
   return (
     <Box sx={{ display: 'flex', gap: 4, alignItems: 'center'}}>
-      <Root id={id}>
+      <StyledRoot id={id}>
         <Checkbox.Indicator>
           <FontAwesomeIcon icon={faCoffee} />
         </Checkbox.Indicator>
-      </Root>
+      </StyledRoot>
       <label htmlFor={id}>{children}</label>
     </Box>
   );
 }
 
-const Root = styled(Checkbox.Root)(({theme}) => ({
+const StyledRoot = styled(Checkbox.Root)(({theme}) => ({
   border: "1px solid",
   padding: "4px",
-  height: theme.spacing(4),
-  width: theme.spacing(4),
+  height: theme.spacing(5),
+  width: theme.spacing(5),
   display: "grid",
   placeItems: "center",
   borderRadius: 2,
+  '&[data-state="checked"]': {
+    backgroundColor: theme.vars.palette.info.primary,
+  }
 }));
