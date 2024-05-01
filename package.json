@@ -16,7 +16,9 @@
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@mui/system": "^5.15.6",
     "@radix-ui/react-checkbox": "^1.0.4",
+    "@react-spring/web": "^9.7.3",
     "next": "14.1.0",
+    "ramda": "^0.30.0",
     "react": "^18",
     "react-dom": "^18"
   },

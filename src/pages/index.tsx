@@ -20,7 +20,16 @@ export default function Home() {
       <Box component='main' sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', gap: 2}}>
 
         <Button>Hey there</Button>
+        <div>Now, that we are talking.</div>
 
+        <div>
+          This is a big deal for all of us.
+          Somewhere over the rainbow. What is the meaning of this behaviour.
+          Zorastrianism is the beliefe in the all mighty.
+          We can do that, but we can also do this.
+          Now, we can fight and die in peace
+          For that is what is needed you know.
+        </div>
         <form>
           <MyCheckbox>Check me out</MyCheckbox>
         </form>
