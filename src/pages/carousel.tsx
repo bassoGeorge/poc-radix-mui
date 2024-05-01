@@ -1,14 +1,28 @@
 import { Box } from "@mui/system";
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import { getView } from "../carousel-experiment/rotating-list";
 
 export default function CarouselPage() {
-  const dataList = [Cv.A, Cv.B, Cv.C, Cv.D, Cv.E, Cv.F, Cv.G];
+  const [idx, setIdx] = useState(0);
+  const [view, setView] = useState<CardProps[]>([]);
+
+  useEffect(() => {
+    setView(getView(FULL_LIST, idx, 3));
+  }, [idx])
+
   return (
+    <>
     <Wrapper>
-      {dataList.map(d => <Card {...d} key={d.key} />)}
+      {view.map(d => <Card {...d} key={d.key} />)}
     </Wrapper>
+    <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
+      <button onClick={() => setIdx(idx => idx == 0 ? FULL_LIST.length - 1 : idx - 1)}>Previous</button>
+      <button onClick={() => setIdx(idx => (idx + 1) % FULL_LIST.length) }>Next</button>
+    </Box>
+    </>
   );
 }
+
 
 const Cv: Record<string, CardProps> = {
   A: { value: 'A', key: 'A', background: '#227c9d' },
@@ -19,6 +33,7 @@ const Cv: Record<string, CardProps> = {
   F: { value: 'F', key: 'F', background: '#227c9d' },
   G: { value: 'G', key: 'G', background: '#17c3b2' },
 }
+const FULL_LIST = [Cv.A, Cv.B, Cv.C, Cv.D, Cv.E, Cv.F, Cv.G];
 
 type CardProps = {
   value: string;
@@ -31,12 +46,12 @@ function Card(config: CardProps) {
     <Box
       key={config.key}
       sx={{
-        height: 150,
-        width: 150,
+        height: 100,
+        width: 100,
         backgroundColor: config.background,
         display: "grid",
         placeItems: "center",
-        fontSize: 90,
+        fontSize: 60,
         border: "1px solid grey",
       }}
     >
@@ -53,7 +68,7 @@ function Wrapper({ children }: React.PropsWithChildren) {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        height: "100vh",
+        height: "80vh",
       }}
     >
       <Box
@@ -62,6 +77,8 @@ function Wrapper({ children }: React.PropsWithChildren) {
           border: "1px solid grey",
           height: 400,
           position: "relative",
+          display: 'flex',
+          gap: 1
         }}
       >
         {children}
