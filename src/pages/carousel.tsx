@@ -11,7 +11,7 @@ export default function CarouselPage() {
     from: { opacity: 0 },
     enter: { opacity: 1 },
     leave: { opacity: 1 },
-    keys: item => item.key
+    keys: (item) => item.key,
   });
 
   useEffect(() => {
@@ -21,10 +21,10 @@ export default function CarouselPage() {
   return (
     <>
       <Wrapper>
-        {transitions((styles, d) => (
-          <animated.div style={styles}>
-            <Card {...d} />
-          </animated.div>
+        {transitions((style, item) => (
+          <Card sx={{ backgroundColor: item.background }} style={style}>
+            {item.value}
+          </Card>
         ))}
       </Wrapper>
       <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
@@ -60,24 +60,14 @@ type CardProps = {
   background: string;
 };
 
-function Card(config: CardProps) {
-  return (
-    <Box
-      key={config.key}
-      sx={{
-        height: 100,
-        width: 100,
-        backgroundColor: config.background,
-        display: "grid",
-        placeItems: "center",
-        fontSize: 60,
-        border: "1px solid grey",
-      }}
-    >
-      {config.value}
-    </Box>
-  );
-}
+const Card = styled(animated.div)({
+  height: 100,
+  width: 100,
+  display: "grid",
+  placeItems: "center",
+  fontSize: 60,
+  border: "1px solid grey",
+});
 
 function Wrapper({ children }: React.PropsWithChildren) {
   return (
