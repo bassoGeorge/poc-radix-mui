@@ -8,16 +8,16 @@ const EX_L = -200;
 
 export default function CarouselPage() {
   const [idx, setIdx] = useState(0);
-  const view = useMemo(() => getView(FULL_LIST, idx, 5), [idx]);
+  const view = useMemo(() => getView(FULL_LIST, idx, 3), [idx]);
   // const [view, setView] = useState<CardProps[]>([]);
 
   const transitions = useTransition(view, {
     // from: { opacity: 0, left: 0 },
     initial: (item, index) => {
-      // console.log(`INITIAL: ${item.value} at position: ${index}`)
+      console.log(`INITIAL: ${item.value} at position: ${index}`)
       // return ({ left: index === 0 ? EX_L : index === 3 ? EX_R : 'auto' });
       // return { left: index * 100}
-      return {}
+      return { opacity: 1, left: index * 100 }
     },
     from: (item, index) => {
       // console.log(`FROM: ${item.value} at position: ${index}`)
@@ -26,38 +26,40 @@ export default function CarouselPage() {
       //   return { left: index === 0 ? EX_L :  EX_R }
       // }
       // return ({ left: index === 0 ? EX_L : index === 3 ? EX_R : 'auto' });
-      return {};
+      return { opacity: 0, left: index * 100 };
       // return { left: index * 100}
     },
     update: (item, index) => {
       return ({
         left: index * 100,
-        opacity: (index === 0 || index === 4) ? 0 : 1
+        opacity: 1
       });
     },
     enter: (item, index) => { 
       // console.log(`ENTERING: ${item.value} at position: ${index}`)
       // return ({ left: index === 0 ? EX_L : index === 3 ? EX_R : index * 100 });
       // return {} 
-      if (index === 0) {
-        return { left: EX_L, opacity: 0};
-      } else if (index === 5) {
-        return { left: EX_R, opacity: 0};
-      } else if (index === 4) {
-        return { left: index * 100, opacity: 0 }
-      } else {
-        return { left: index * 100, opacity: 1}
-      }
+      // if (index === 0) {
+      //   return { left: EX_L, opacity: 0};
+      // } else if (index === 5) {
+      //   return { left: EX_R, opacity: 0};
+      // } else if (index === 4) {
+      //   return { left: index * 100, opacity: 0 }
+      // } else {
+      //   return { left: index * 100, opacity: 1}
+      // }
+      return { opacity: 1}
     },
     leave: (item, index) => {
       // console.log(`LEAVING: ${item.value} at position: ${index}`)
-      if (index === 0) {
-        return { left: EX_L, opacity: 0};
-      } else if (index === 5) {
-        return { left: EX_R, opacity: 0};
-      } else {
-        return { left: index * 100, opacity: 1}
-      }
+      // if (index === 0) {
+      //   return { left: EX_L, opacity: 0};
+      // } else if (index === 5) {
+      //   return { left: EX_R, opacity: 0};
+      // } else {
+      //   return { left: index * 100, opacity: 1}
+      // }
+      return { opacity: 0 }
     },
     // update: {opacity: 1},
     // enter: (item, index) => {
