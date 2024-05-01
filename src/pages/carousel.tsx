@@ -1,38 +1,56 @@
-import { Box } from "@mui/system";
+import { Box, styled } from "@mui/system";
 import React, { useCallback, useEffect, useState } from "react";
 import { getView } from "../carousel-experiment/rotating-list";
+import { useTransition, animated } from "@react-spring/web";
 
 export default function CarouselPage() {
   const [idx, setIdx] = useState(0);
   const [view, setView] = useState<CardProps[]>([]);
 
+  const transitions = useTransition(view, {
+    from: { opacity: 0 },
+    enter: { opacity: 1 },
+    leave: { opacity: 1 },
+  });
+
   useEffect(() => {
     setView(getView(FULL_LIST, idx, 3));
-  }, [idx])
+  }, [idx]);
 
   return (
     <>
-    <Wrapper>
-      {view.map(d => <Card {...d} key={d.key} />)}
-    </Wrapper>
-    <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
-      <button onClick={() => setIdx(idx => idx == 0 ? FULL_LIST.length - 1 : idx - 1)}>Previous</button>
-      <button onClick={() => setIdx(idx => (idx + 1) % FULL_LIST.length) }>Next</button>
-    </Box>
+      <Wrapper>
+        {transitions((styles, d) => (
+          <animated.div style={styles}>
+            <Card {...d} />
+          </animated.div>
+        ))}
+      </Wrapper>
+      <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
+        <button
+          onClick={() =>
+            setIdx((idx) => (idx == 0 ? FULL_LIST.length - 1 : idx - 1))
+          }
+        >
+          Previous
+        </button>
+        <button onClick={() => setIdx((idx) => (idx + 1) % FULL_LIST.length)}>
+          Next
+        </button>
+      </Box>
     </>
   );
 }
 
-
 const Cv: Record<string, CardProps> = {
-  A: { value: 'A', key: 'A', background: '#227c9d' },
-  B: { value: 'B', key: 'B', background: '#17c3b2' },
-  C: { value: 'C', key: 'C', background: '#ffcb77' },
-  D: { value: 'D', key: 'D', background: '#fef9ef' },
-  E: { value: 'E', key: 'E', background: '#fe6d73' },
-  F: { value: 'F', key: 'F', background: '#227c9d' },
-  G: { value: 'G', key: 'G', background: '#17c3b2' },
-}
+  A: { value: "A", key: "A", background: "#227c9d" },
+  B: { value: "B", key: "B", background: "#17c3b2" },
+  C: { value: "C", key: "C", background: "#ffcb77" },
+  D: { value: "D", key: "D", background: "#fef9ef" },
+  E: { value: "E", key: "E", background: "#fe6d73" },
+  F: { value: "F", key: "F", background: "#227c9d" },
+  G: { value: "G", key: "G", background: "#17c3b2" },
+};
 const FULL_LIST = [Cv.A, Cv.B, Cv.C, Cv.D, Cv.E, Cv.F, Cv.G];
 
 type CardProps = {
@@ -77,8 +95,8 @@ function Wrapper({ children }: React.PropsWithChildren) {
           border: "1px solid grey",
           height: 400,
           position: "relative",
-          display: 'flex',
-          gap: 1
+          display: "flex",
+          gap: 1,
         }}
       >
         {children}
