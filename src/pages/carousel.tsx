@@ -8,7 +8,7 @@ const EX_L = -200;
 
 export default function CarouselPage() {
   const [idx, setIdx] = useState(0);
-  const view = useMemo(() => getView(FULL_LIST, idx, 3), [idx]);
+  const view = useMemo(() => getView(FULL_LIST, idx, 5), [idx]);
   // const [view, setView] = useState<CardProps[]>([]);
 
   const transitions = useTransition(view, {
@@ -31,17 +31,33 @@ export default function CarouselPage() {
     },
     update: (item, index) => {
       return ({
-        left: index * 100
+        left: index * 100,
+        opacity: (index === 0 || index === 4) ? 0 : 1
       });
     },
     enter: (item, index) => { 
-      console.log(`ENTERING: ${item.value} at position: ${index}`)
-      return ({ left: index === 0 ? EX_L : index === 3 ? EX_R : index * 100 });
-      return {} 
+      // console.log(`ENTERING: ${item.value} at position: ${index}`)
+      // return ({ left: index === 0 ? EX_L : index === 3 ? EX_R : index * 100 });
+      // return {} 
+      if (index === 0) {
+        return { left: EX_L, opacity: 0};
+      } else if (index === 5) {
+        return { left: EX_R, opacity: 0};
+      } else if (index === 4) {
+        return { left: index * 100, opacity: 0 }
+      } else {
+        return { left: index * 100, opacity: 1}
+      }
     },
     leave: (item, index) => {
       // console.log(`LEAVING: ${item.value} at position: ${index}`)
-      return ({ left: index === 0 ? EX_L : index === 3 ? EX_R : 'auto' });
+      if (index === 0) {
+        return { left: EX_L, opacity: 0};
+      } else if (index === 5) {
+        return { left: EX_R, opacity: 0};
+      } else {
+        return { left: index * 100, opacity: 1}
+      }
     },
     // update: {opacity: 1},
     // enter: (item, index) => {
@@ -97,6 +113,9 @@ const Cv: Record<string, CardProps> = {
   E: { value: "E", key: "E", background: "#fe6d73" },
   F: { value: "F", key: "F", background: "#227c9d" },
   G: { value: "G", key: "G", background: "#17c3b2" },
+  H: { value: "H", key: "H", background: "#ffcb77" },
+  I: { value: "I", key: "I", background: "#fef9ef" },
+  J: { value: "J", key: "J", background: "#fe6d73" },
 };
 const FULL_LIST = [Cv.A, Cv.B, Cv.C, Cv.D, Cv.E, Cv.F, Cv.G];
 
