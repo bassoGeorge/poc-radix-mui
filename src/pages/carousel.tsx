@@ -1,22 +1,62 @@
 import { Box, styled } from "@mui/system";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { getView } from "../carousel-experiment/rotating-list";
 import { useTransition, animated } from "@react-spring/web";
 
+const EX_R = 800;
+const EX_L = -200;
+
 export default function CarouselPage() {
   const [idx, setIdx] = useState(0);
-  const [view, setView] = useState<CardProps[]>([]);
+  const view = useMemo(() => getView(FULL_LIST, idx, 3), [idx]);
+  // const [view, setView] = useState<CardProps[]>([]);
 
   const transitions = useTransition(view, {
-    from: { opacity: 0 },
-    enter: { opacity: 1 },
-    leave: { opacity: 1 },
+    // from: { opacity: 0, left: 0 },
+    initial: (item, index) => {
+      // console.log(`INITIAL: ${item.value} at position: ${index}`)
+      // return ({ left: index === 0 ? EX_L : index === 3 ? EX_R : 'auto' });
+      // return { left: index * 100}
+      return {}
+    },
+    from: (item, index) => {
+      // console.log(`FROM: ${item.value} at position: ${index}`)
+      // if (index === 0 || index === 3) {
+      //   console.log(`FROM: ${item.value} at position: ${index}`)
+      //   return { left: index === 0 ? EX_L :  EX_R }
+      // }
+      // return ({ left: index === 0 ? EX_L : index === 3 ? EX_R : 'auto' });
+      return {};
+      // return { left: index * 100}
+    },
+    update: (item, index) => {
+      return ({
+        left: index * 100
+      });
+    },
+    enter: (item, index) => { 
+      console.log(`ENTERING: ${item.value} at position: ${index}`)
+      return ({ left: index === 0 ? EX_L : index === 3 ? EX_R : index * 100 });
+      return {} 
+    },
+    leave: (item, index) => {
+      // console.log(`LEAVING: ${item.value} at position: ${index}`)
+      return ({ left: index === 0 ? EX_L : index === 3 ? EX_R : 'auto' });
+    },
+    // update: {opacity: 1},
+    // enter: (item, index) => {
+    //   console.log('enter on item', item.value);
+    //   return { opacity: 1 };
+    //   // return ({ opacity: 1, left: (index + 1) * 100 });
+    // },
+    // leave: { opacity: 0 },
     keys: (item) => item.key,
   });
 
-  useEffect(() => {
-    setView(getView(FULL_LIST, idx, 3));
-  }, [idx]);
+  // useEffect(() => {
+  //   console.log('>>>>>>>>>>>>>>> ')
+  //   setView(getView(FULL_LIST, idx, 3));
+  // }, [idx]);
 
   return (
     <>
@@ -30,12 +70,18 @@ export default function CarouselPage() {
       <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
         <button
           onClick={() =>
-            setIdx((idx) => (idx == 0 ? FULL_LIST.length - 1 : idx - 1))
+            {
+              setIdx((idx) => (idx == 0 ? FULL_LIST.length - 1 : idx - 1));
+              // api.start();
+            }
           }
         >
           Previous
         </button>
-        <button onClick={() => setIdx((idx) => (idx + 1) % FULL_LIST.length)}>
+        <button onClick={() => {
+          setIdx((idx) => (idx + 1) % FULL_LIST.length);
+          // api.start();
+        }}>
           Next
         </button>
       </Box>
@@ -67,6 +113,7 @@ const Card = styled(animated.div)({
   placeItems: "center",
   fontSize: 60,
   border: "1px solid grey",
+  position: 'absolute'
 });
 
 function Wrapper({ children }: React.PropsWithChildren) {
